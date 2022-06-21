@@ -1,4 +1,4 @@
-use actix_web::ResponseError;
+use actix_web::{Responder, ResponseError, HttpResponse, http::header::ContentType};
 use mongodb::bson;
 use thiserror::Error;
 
@@ -13,6 +13,9 @@ pub enum AppError {
     #[error("mongo error")]
     MongoError(#[from] mongodb::error::Error),
 
+    #[error("actix error")]
+    ActixError(#[from] actix_web::Error),
+
     #[error("reqwest error")]
     ReqwestError(#[from] reqwest::Error),
 
@@ -22,4 +25,10 @@ pub enum AppError {
 
 pub type Result<T> = std::result::Result<T, AppError>;
 
-impl ResponseError for AppError {}
+impl ResponseError for AppError {
+    fn error_response(&self) -> HttpResponse {
+        HttpResponse::build(self.status_code())
+            .insert_header(ContentType::html())
+            .body(self.to_string())
+    }
+}

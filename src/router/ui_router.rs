@@ -1,25 +1,25 @@
-use actix_web::{
-    get,
-    web::{self, Data},
-    Responder, Scope,
-};
-use chrono::Utc;
+use actix_web::{get, web, Responder, Scope};
+
+use bson::doc;
 use tera::{Context, Tera};
 
-use crate::template::render;
+use crate::{
+    app::App,
+    template::{render, HttpResponseResult},
+};
 
 #[get("/")]
-async fn index_page(tpl: Data<Tera>) -> impl Responder {
-    let mut ctx = Context::new();
-    ctx.insert("t1", &Utc::now());
-    render(tpl, "index.html", &ctx)
+async fn index_page(tpl: web::Data<Tera>) -> HttpResponseResult {
+    render(tpl, "index.html", &Context::new())
 }
 
-#[get("/t1")]
-async fn t1_page() -> impl Responder {
-    "t1"
+#[get("/proxies")]
+async fn proxies_page(tpl: web::Data<Tera>, app: web::Data<App>) -> HttpResponseResult {
+    let mut ctx = Context::new();
+    ctx.insert("proxies", &app.db.proxy.find(doc! {}, "host", 0).await?);
+    render(tpl, "proxies.html", &ctx)
 }
 
 pub fn ui_router() -> Scope {
-    web::scope("").service(index_page).service(t1_page)
+    web::scope("").service(index_page).service(proxies_page)
 }

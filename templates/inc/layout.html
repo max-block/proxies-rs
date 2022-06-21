@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="/static/bootstrap.min.css" rel="stylesheet">
@@ -9,39 +9,38 @@
     <link rel="shortcut icon" href="/static/favicon.ico">
     <script src="/static/sortable.min.js"></script>
     <title>{{ app_name() }}</title>
-</head>
+  </head>
 
-<body class="container-fluid">
+  <body class="container-fluid">
 
     <header>
-        <div class="d-flex mt-2 align-items-center">
-            <h3>{{ app_name() }}</h3>
-            <div class="ms-5">
+      <div class="d-flex mt-2 align-items-center">
+        <h3>{{ app_name() }}</h3>
+        <div class="ms-5">
 
-                <a href="/sources" class="me-3">sources</a>
-                <a href="/proxies" class="me-3">proxies</a>
+          <a href="/sources" class="me-3">sources</a>
+          <a href="/proxies" class="me-3">proxies</a>
 
-            </div>
-
-            <a href="/logout" class="ms-5">logout</a>
         </div>
-        <hr>
+
+        <a href="/logout" class="ms-5">logout</a>
+      </div>
+      <hr>
     </header>
 
-
     <main>
-        {% block content -%}
-        {%- endblock %}
+      {% block content -%}{%- endblock %}
     </main>
 
-
     <footer>
-        <br>
-        <hr>
-        v{{ app_version() }} / {{ now() | dt }}
+      <br>
+      <hr>
+      v{{ app_version() }}
+      /
+      {{ now() | dt }}
     </footer>
 
     <script src="/static/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 
 </html>
