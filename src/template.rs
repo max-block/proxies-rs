@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, error::Error};
 
 use actix_web::HttpResponse;
 use chrono::DateTime;
@@ -35,13 +35,22 @@ impl Template {
     }
 
     pub fn render(&self, name: &str) -> TemplateResult {
-        let s = self.tera.render(name, &self.ctx)?;
-        Ok(HttpResponse::Ok().content_type("text/html").body(s))
+        Ok(self._render(name, &self.ctx))
     }
 
     pub fn render_with_ctx(&self, name: &str, mut ctx: Context) -> TemplateResult {
         ctx.extend(self.ctx.clone());
-        let s = self.tera.render(name, &ctx)?;
-        Ok(HttpResponse::Ok().content_type("text/html").body(s))
+        Ok(self._render(name, &ctx))
+    }
+
+    fn _render(&self, name: &str, ctx: &Context) -> HttpResponse {
+        match self.tera.render(name, ctx) {
+            Ok(res) => HttpResponse::Ok().content_type("text/html").body(res),
+            Err(err) => {
+                dbg!(&err);
+                HttpResponse::Ok().content_type("text/html").body(err.to_string())
+            },
+        }
+
     }
 }

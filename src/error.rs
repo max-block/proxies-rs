@@ -6,11 +6,14 @@ pub enum AppError {
     #[error("db error")]
     DbError(#[from] sqlx::Error),
 
+    #[error(transparent)]
+    TeraError(#[from] tera::Error),
+
+    #[error("reqwest eror")]
+    ReqwestError(#[from] reqwest::Error),
+
     #[error("not found")]
     NotFound,
-
-    #[error("tera error")]
-    TeraError(#[from] tera::Error)
 }
 
 impl ResponseError for AppError {}
