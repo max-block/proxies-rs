@@ -1,3 +1,4 @@
+use crate::util::utc_delta_seconds;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::{postgres::PgPoolOptions, PgPool, Result};
@@ -103,6 +104,16 @@ impl Db {
 
     pub async fn find_proxy(&self, id: i32) -> Result<Option<Proxy>> {
         sqlx::query_as!(Proxy, "select * from proxy where id=$1", id).fetch_optional(&self.pool).await
+    }
+
+    pub async fn find_proxies_for_check(&self, limit: i64) -> Result<Vec<i32>> {
+        sqlx::query_scalar!(
+            "select id from proxy where checked_at is null or checked_at < $1 order by checked_at nulls first limit $2",
+            utc_delta_seconds(-60),
+            limit
+        )
+        .fetch_all(&self.pool)
+        .await
     }
 
     pub async fn create_proxy(&self, params: &CreateProxy) -> Result<Option<i32>> {

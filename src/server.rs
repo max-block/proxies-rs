@@ -24,7 +24,7 @@ async fn api_post(req: HttpRequest) -> JsonResult {
 }
 
 pub async fn run() -> std::io::Result<()> {
-    std::env::set_var("RUST_LOG", " actix_web=debug");
+    // std::env::set_var("RUST_LOG", " actix_web=debug");
     env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
     let config = Config::new();
 

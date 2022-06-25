@@ -1,9 +1,10 @@
 use std::{sync::Arc, time::Duration};
 
-use reqwest::{Client, Proxy, Response};
+use futures::future::join_all;
+use reqwest::{Client, Proxy};
 use serde::Deserialize;
 
-use crate::{db::Db, AppError};
+use crate::{db::Db, AppError, synchronized, Result};
 
 pub struct ProxyService {
     db: Arc<Db>,
@@ -14,7 +15,9 @@ impl ProxyService {
         Self { db }
     }
 
-    pub async fn check(&self, id: i32) -> crate::Result<String> {
+    pub async fn check(&self, id: i32) -> Result<String> {
+        log::info!("proxy_service: check {}", id);
+
         #[derive(Deserialize, Debug)]
         struct Response {
             origin: String,
@@ -34,5 +37,13 @@ impl ProxyService {
         }
         self.db.set_proxy_status(id, status).await?;
         Ok(status.to_string())
+    }
+
+    pub async fn check_next(&self) ->Result<bool>{
+        synchronized!();
+        log::debug!("proxy_service: check_next");
+        let proxies = self.db.find_proxies_for_check(10).await?;
+        join_all(proxies.iter().map(|id|self.check(*id)).collect::<Vec<_>>()).await;
+        Ok(true)
     }
 }

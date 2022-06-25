@@ -10,6 +10,11 @@ async fn get_proxies(app: web::Data<App>) -> JsonResult {
     json_result(app.db.find_proxies().await?)
 }
 
+#[get("/test")]
+async fn test(app: web::Data<App>) -> JsonResult {
+    json_result(app.proxy_service.check_next().await?)
+}
+
 #[get("/{id}")]
 async fn get_proxy(app: web::Data<App>, id: web::Path<i32>) -> JsonResult {
     json_result(app.db.find_proxy(*id).await?)
@@ -21,5 +26,5 @@ async fn check_proxy(app: web::Data<App>, id: web::Path<i32>) -> JsonResult {
 }
 
 pub fn proxy_router() -> Scope {
-    web::scope("/api/proxies").service(get_proxies).service(get_proxy).service(check_proxy)
+    web::scope("/api/proxies").service(get_proxies).service(test).service(get_proxy).service(check_proxy)
 }
