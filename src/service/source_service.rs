@@ -2,10 +2,11 @@ use std::net::Ipv4Addr;
 use std::str::FromStr;
 use std::sync::Arc;
 
+use futures::future::join_all;
 use itertools::Itertools;
 
 use crate::db::{CreateProxy, Db};
-use crate::{AppError, Result};
+use crate::{async_synchronized, AppError, Result};
 
 pub struct SourceService {
     db: Arc<Db>,
@@ -36,6 +37,14 @@ impl SourceService {
         }
         self.db.set_checked_at_for_source(id).await?;
         Ok(proxies)
+    }
+
+    pub async fn check_next(&self) -> Result<()> {
+        async_synchronized!();
+        println!("source_service.check_next");
+        let sources = self.db.find_sources_for_check(10).await?;
+        join_all(sources.iter().map(|id| self.check(*id)).collect::<Vec<_>>()).await;
+        Ok(())
     }
 }
 

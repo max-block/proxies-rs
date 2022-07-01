@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{sync::Arc, time::Duration};
 
 use actix_files::Files;
 use actix_web::{get, middleware, web, App as HttpApp, HttpRequest, HttpServer};
@@ -8,9 +8,9 @@ use serde_json::Value;
 use crate::{
     app::App,
     config::Config,
-    router::{source_router, ui_router, proxy_router},
+    router::{proxy_router, source_router, ui_router},
     template::Template,
-    util::{ JsonResult},
+    util::JsonResult,
 };
 
 #[get("/api-post/{tail_url:.*}")]
@@ -23,13 +23,8 @@ async fn api_post(req: HttpRequest) -> JsonResult {
     Ok(web::Json(res))
 }
 
-pub async fn run() -> std::io::Result<()> {
-    // std::env::set_var("RUST_LOG", " actix_web=debug");
-    env_logger::init_from_env(env_logger::Env::new().default_filter_or("info"));
-    let config = Config::new();
-
-    let app = App::new(&config).await;
-    let app = web::Data::new(app);
+pub async fn run_server(config: &Config, app: Arc<App>) -> std::io::Result<()> {
+    let app = web::Data::from(app);
 
     let tpl = Template::new(&config).unwrap();
     let tpl = web::Data::new(tpl);
@@ -39,7 +34,7 @@ pub async fn run() -> std::io::Result<()> {
         HttpApp::new()
             .wrap(middleware::Logger::default())
             .app_data(tpl.clone())
-            .app_data(app.clone())
+            .app_data(web::Data::clone(&app))
             .service(Files::new("/static", "static"))
             .service(api_post)
             .service(source_router())

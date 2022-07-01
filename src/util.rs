@@ -11,12 +11,12 @@ pub fn json_result<T: Serialize>(value: T) -> JsonResult {
 
 
 #[macro_export]
-macro_rules! synchronized {
+macro_rules! async_synchronized {
     () => {
         lazy_static::lazy_static! {
-            static ref LOCK: std::sync::Mutex<i32> = std::sync::Mutex::new(0);
+            static ref LOCK: futures::lock::Mutex<i32> = futures::lock::Mutex::new(0);
         }
-        let _guard = LOCK.lock().unwrap();
+        let _guard = LOCK.lock().await;
     };
 }
 

@@ -90,6 +90,16 @@ impl Db {
         sqlx::query_as!(Source, "select * from source order by id").fetch_all(&self.pool).await
     }
 
+    pub async fn find_sources_for_check(&self, limit: i64) -> Result<Vec<i32>> {
+        sqlx::query_scalar!(
+            "select id from source where checked_at is null or checked_at < $1 order by checked_at nulls first limit $2",
+            utc_delta_seconds(-600),
+            limit
+        )
+        .fetch_all(&self.pool)
+        .await
+    }
+
     pub async fn find_source(&self, id: i32) -> Result<Option<Source>> {
         sqlx::query_as!(Source, "select * from source where id=$1", id).fetch_optional(&self.pool).await
     }
@@ -116,6 +126,12 @@ impl Db {
         .await
     }
 
+    pub async fn find_live_proxies(&self) -> Result<Vec<Proxy>> {
+        sqlx::query_as!(Proxy, "select * from proxy where status = $1 and last_ok_at >= $2", "ok", utc_delta_seconds(-5 * 60))
+            .fetch_all(&self.pool)
+            .await
+    }
+
     pub async fn create_proxy(&self, params: &CreateProxy) -> Result<Option<i32>> {
         let res = sqlx::query!(
             r#"
@@ -137,9 +153,11 @@ impl Db {
     }
 
     pub async fn set_proxy_status(&self, id: i32, status: &str) -> Result<u64> {
-        Ok(sqlx::query!("update proxy set status=$1, checked_at=now() where id=$2", status, id)
-            .execute(&self.pool)
-            .await?
-            .rows_affected())
+        let mut query = String::from("update proxy set status=$1, checked_at=now()");
+        if status == "ok" {
+            query.push_str(", last_ok_at=now() ");
+        }
+        query.push_str(" where id=$2");
+        Ok(sqlx::query(&query).bind(status).bind(id).execute(&self.pool).await?.rows_affected())
     }
 }
