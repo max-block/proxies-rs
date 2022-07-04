@@ -31,4 +31,42 @@
       {% endfor %}
     </tbody>
   </table>
+
+  <hr/>
+
+  <form class="row row-cols-lg-auto g-3 align-items-center" method="post" action="/create_source">
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="name" name="name" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="link" name="link" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="username" name="username" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="password" name="password" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input type="number" class="form-control" placeholder="port" name="port" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="protocol" name="protocol" required/>
+      </div>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">create source</button>
+    </div>
+  </form>
 {% endblock %}

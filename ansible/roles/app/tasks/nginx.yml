@@ -1,0 +1,5 @@
+- file: path=/apps/nginx state=directory
+
+- template: src=nginx.yml dest=/apps/nginx/docker-compose.yml
+
+- docker_compose: project_name=nginx project_src=/apps/nginx restarted=yes

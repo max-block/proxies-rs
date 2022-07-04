@@ -27,7 +27,7 @@ impl Template {
         let mut tera = Tera::new("templates/**/*.html")?;
         let mut ctx = Context::new();
         ctx.insert("app_name", &config.app_name);
-        ctx.insert("app_version", &config.cargo_pkg_version);
+        ctx.insert("app_version", &config.app_version);
         tera.register_filter("dt", dt_filter);
         Ok(Template { tera, ctx })
     }

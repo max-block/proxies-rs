@@ -1,0 +1,461 @@
+{
+  "db": "PostgreSQL",
+  "13f3132f53d392323aa582663bd089503fa5353148743077a5bbef78f1096dec": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Timestamptz",
+          "Int8"
+        ]
+      }
+    },
+    "query": "select id from source where checked_at is null or checked_at < $1 order by checked_at nulls first limit $2"
+  },
+  "2141e6a119274bc549f3e81c25a37041757fd9021b8e95021d921221061af50f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "status",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "protocol",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "host",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "username",
+          "ordinal": 4,
+          "type_info": "Text"
+        },
+        {
+          "name": "password",
+          "ordinal": 5,
+          "type_info": "Text"
+        },
+        {
+          "name": "port",
+          "ordinal": 6,
+          "type_info": "Int4"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 7,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "checked_at",
+          "ordinal": 8,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "last_ok_at",
+          "ordinal": 9,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "select * from proxy order by id"
+  },
+  "427f2aaf4399fd72f4dbee13513f9da734a6a0a8684682f44c4258acc2dc9a51": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Timestamptz",
+          "Int8"
+        ]
+      }
+    },
+    "query": "select id from proxy where checked_at is null or checked_at < $1 order by checked_at nulls first limit $2"
+  },
+  "4c35385e716b3fd1827b4647fc76066a60cf0635bba7787ea6d9431826eabe20": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "status",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "protocol",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "host",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "username",
+          "ordinal": 4,
+          "type_info": "Text"
+        },
+        {
+          "name": "password",
+          "ordinal": 5,
+          "type_info": "Text"
+        },
+        {
+          "name": "port",
+          "ordinal": 6,
+          "type_info": "Int4"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 7,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "checked_at",
+          "ordinal": 8,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "last_ok_at",
+          "ordinal": 9,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Timestamptz"
+        ]
+      }
+    },
+    "query": "select * from proxy where status = $1 and last_ok_at >= $2"
+  },
+  "6f4bf0cb45f12398faae94b199b7554a758505b4bd4e62870b0a9fa2984ead17": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "name",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "link",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "username",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "password",
+          "ordinal": 4,
+          "type_info": "Text"
+        },
+        {
+          "name": "port",
+          "ordinal": 5,
+          "type_info": "Int4"
+        },
+        {
+          "name": "protocol",
+          "ordinal": 6,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 7,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "checked_at",
+          "ordinal": 8,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      }
+    },
+    "query": "select * from source where id=$1"
+  },
+  "73e045e20655626033b5fcbf35f6b992495eddaffe271d28bd69220330b4f93f": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Int4",
+          "Text"
+        ]
+      }
+    },
+    "query": "\n            insert into source (name, link, username, password, port, protocol) \n            values ($1, $2, $3, $4, $5, $6) returning id"
+  },
+  "767d9748e2646a9d33139ac6838c71c5e86ca68007e2eb5a679b84f118af5274": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "status",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "protocol",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "host",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "username",
+          "ordinal": 4,
+          "type_info": "Text"
+        },
+        {
+          "name": "password",
+          "ordinal": 5,
+          "type_info": "Text"
+        },
+        {
+          "name": "port",
+          "ordinal": 6,
+          "type_info": "Int4"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 7,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "checked_at",
+          "ordinal": 8,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "last_ok_at",
+          "ordinal": 9,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      }
+    },
+    "query": "select * from proxy where id=$1"
+  },
+  "796a9ffb178b62d792cc9e5d66d09e96bb1a5a22978c5f0a6ad5484daf372a87": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [
+        false
+      ],
+      "parameters": {
+        "Left": [
+          "Text",
+          "Text",
+          "Text",
+          "Text",
+          "Int4"
+        ]
+      }
+    },
+    "query": "\n            insert into proxy (protocol, host, username, password, port)\n            values ($1, $2, $3, $4, $5) on conflict do nothing returning id"
+  },
+  "a944e98faf985f6c972afe757452ec7952a609f4e478b0f4b48ed536ca19b903": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      }
+    },
+    "query": "update source set checked_at=now() where id=$1"
+  },
+  "db1c2569c5ee47703ff53dbcef4538136428e6aaca769273fa7db051066809bb": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "name",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "link",
+          "ordinal": 2,
+          "type_info": "Text"
+        },
+        {
+          "name": "username",
+          "ordinal": 3,
+          "type_info": "Text"
+        },
+        {
+          "name": "password",
+          "ordinal": 4,
+          "type_info": "Text"
+        },
+        {
+          "name": "port",
+          "ordinal": 5,
+          "type_info": "Int4"
+        },
+        {
+          "name": "protocol",
+          "ordinal": 6,
+          "type_info": "Text"
+        },
+        {
+          "name": "created_at",
+          "ordinal": 7,
+          "type_info": "Timestamptz"
+        },
+        {
+          "name": "checked_at",
+          "ordinal": 8,
+          "type_info": "Timestamptz"
+        }
+      ],
+      "nullable": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "select * from source order by id"
+  }
+}

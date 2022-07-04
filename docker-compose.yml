@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  app:
+    image: proxies:latest
+    command: main
+    environment:
+      - APP_NAME=${APP_NAME}
+      - DATABASE_URL=postgres://postgres:secret@db/proxies
+      - ACCESS_TOKEN=secret
+    volumes:
+      - app:/data
+    ports:
+      - 3000:3000
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=proxies
+      
+    volumes:
+      - db:/var/lib/postgresql/data
+
+
+volumes:
+  db:
+  app:

@@ -1,0 +1,31 @@
+- timezone: name=UTC
+
+- ufw: state=enabled policy=allow direction=outgoing
+
+- ufw: rule=limit name=OpenSSH
+
+- ufw: direction=incoming policy=deny
+
+- ufw: rule=allow port={{ item }}
+  loop: ["80", "443"]
+
+- ufw: state=reloaded
+
+- apt: upgrade=yes update_cache=yes cache_valid_time=86400 # 1 day
+
+- apt: pkg={{ item }} state=latest
+  loop:
+    - mc
+    - python3-pip
+    - docker.io
+    - ntp
+
+- pip: name={{ item }}
+  loop:
+    - docker
+    - docker-compose
+    - jsondiff
+
+- docker_network: name=nginx
+
+- include_tasks: nginx.yml

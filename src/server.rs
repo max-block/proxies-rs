@@ -41,7 +41,7 @@ pub async fn run_server(config: &Config, app: Arc<App>) -> std::io::Result<()> {
             .service(proxy_router())
             .service(ui_router())
     })
-    .bind("localhost:3000")?
+    .bind("0.0.0.0:3000")?
     .run()
     .await
 }
