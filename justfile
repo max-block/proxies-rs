@@ -25,5 +25,13 @@ upload: docker
 	docker push {{project_image}}:{{version}}
 
 
+publish: upload
+	cd ansible;	ansible-playbook -i hosts.yml --extra-vars="playbook_action=update app_version={{version}}" playbook.yml
+	git tag -a 'v{{version}}' -m 'v{{version}}'    
+
+host:
+	cd ansible;	ansible-playbook -i hosts.yml --extra-vars="playbook_action=host" playbook.yml
+
+
 docker-compose: docker
 	docker compose up --build

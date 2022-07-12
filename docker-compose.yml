@@ -6,7 +6,7 @@ services:
     command: main
     environment:
       - APP_NAME=${APP_NAME}
-      - DATABASE_URL=postgres://postgres:secret@db/proxies
+      - DATABASE_URL=postgres://postgres:secret@db/app
       - ACCESS_TOKEN=secret
     volumes:
       - app:/data
@@ -16,7 +16,7 @@ services:
     image: postgres:14
     environment:
       - POSTGRES_PASSWORD=secret
-      - POSTGRES_DB=proxies
+      - POSTGRES_DB=app
       
     volumes:
       - db:/var/lib/postgresql/data

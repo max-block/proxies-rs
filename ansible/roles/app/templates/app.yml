@@ -4,13 +4,11 @@ services:
   app:
     container_name: {{ app }}_app
     image: {{ app_image }}:{{ app_version }}
-    command: gunicorn -b 0.0.0.0:3000 --timeout 999 --threads 12 -k uvicorn.workers.UvicornWorker app.main:server
+    command: main
     restart: always
     environment:
       - APP_NAME={{ app }}
-      - DATABASE_URL=mongodb://root:{{ db_password }}@db/app?authSource=admin
-      - DATABASE_HOST=db
-      - DATA_DIR=/data
+      - DATABASE_URL=mongodb://postgres:{{ db_password }}@db/app
       - DOMAIN={{ domain }}
       - ACCESS_TOKEN={{ access_token }}
       - VIRTUAL_HOST={{ domain }}
@@ -35,11 +33,11 @@ services:
 
   db:
     container_name: {{ app }}_db
-    image: mongo:5.0
+    image: postgres:14
     restart: always
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD={{ db_password }}
+      - POSTGRES_PASSWORD={{ db_password }}
+      - POSTGRES_DB=app
     volumes:
       - db:/data/db
     networks:
