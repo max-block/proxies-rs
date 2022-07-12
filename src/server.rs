@@ -26,7 +26,7 @@ async fn api_post(req: HttpRequest) -> JsonResult {
 pub async fn run_server(config: &Config, app: Arc<App>) -> std::io::Result<()> {
     let app = web::Data::from(app);
 
-    let tpl = Template::new(&config).unwrap();
+    let tpl = Template::new(config).unwrap();
     let tpl = web::Data::new(tpl);
 
     log::info!("starting HTTP server at http://localhost:3000");

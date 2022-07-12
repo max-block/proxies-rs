@@ -4,7 +4,7 @@ use futures::future::join_all;
 use reqwest::{Client, Proxy};
 use serde::Deserialize;
 
-use crate::{db::Db, AppError, async_synchronized, Result};
+use crate::{async_synchronized, db::Db, AppError, Result};
 
 pub struct ProxyService {
     db: Arc<Db>,
@@ -39,11 +39,11 @@ impl ProxyService {
         Ok(status.to_string())
     }
 
-    pub async fn check_next(&self) ->Result<()>{
+    pub async fn check_next(&self) -> Result<()> {
         async_synchronized!();
         println!("proxy_service.check_next");
         let proxies = self.db.find_proxies_for_check(10).await?;
-        join_all(proxies.iter().map(|id|self.check(*id)).collect::<Vec<_>>()).await;
+        join_all(proxies.iter().map(|id| self.check(*id)).collect::<Vec<_>>()).await;
         Ok(())
     }
 }

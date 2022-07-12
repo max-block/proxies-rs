@@ -9,7 +9,6 @@ pub fn json_result<T: Serialize>(value: T) -> JsonResult {
     Ok(Json(serde_json::to_value(value).unwrap())) // TODO: replace unwrap with AppError
 }
 
-
 #[macro_export]
 macro_rules! async_synchronized {
     () => {

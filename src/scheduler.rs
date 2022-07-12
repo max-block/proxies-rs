@@ -7,17 +7,17 @@ use crate::app::App;
 pub fn run_scheduler(app: Arc<App>) {
     let mut scheduler = AsyncScheduler::new();
 
-    let app_job1 = Arc::clone(&app);
-    let app_job2 = Arc::clone(&app);
-
+    let app_job = Arc::clone(&app);
     scheduler.every(60.seconds()).run(move || {
-        let app = app_job1.clone();
+        let app = app_job.clone();
         async move {
             app.source_service.check_next().await.unwrap();
         }
     });
+
+    let app_job = Arc::clone(&app);
     scheduler.every(2.seconds()).run(move || {
-        let app = app_job2.clone();
+        let app = app_job.clone();
         async move {
             app.proxy_service.check_next().await.unwrap();
         }

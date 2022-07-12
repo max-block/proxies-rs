@@ -14,6 +14,7 @@ async fn get_proxies(app: web::Data<App>) -> JsonResult {
 #[get("/live")]
 async fn get_live_proxies(app: web::Data<App>) -> JsonResult {
     let proxies = app.db.find_live_proxies().await?;
+    let proxies: Vec<String> = proxies.into_iter().map(|p| p.url()).collect();
     json_result(json!({ "proxies": proxies }))
 }
 
